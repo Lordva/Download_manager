@@ -1,0 +1,9 @@
+[Unit]
+Description=Dowload file sorter
+
+[Service]
+ExecStart=bash /home/louis/dev/scripts/downloads/exec.sh
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
