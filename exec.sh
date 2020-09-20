@@ -20,13 +20,13 @@ SERVICE_PATH=/etc/systemd/system
 SERVICE_FILE=dlmanager.service
 RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanager.service
 BIN_PATH=/bin/dlmanager
-NO_SERVICE_ARG=--noservice-install
+NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
 #verif is le service existe
 
 if [ ! -f $SERVICE_PATH"/"$SERVICE_FILE ]; then
 	echo "le service n'existe pas !"
-	if [ "$1" -ne $NO_SERVICE_ARG]; then
+	if [ "$1" != "$NO_SERVICE_ARG" ]; then
 		if [ "$EUID" -ne 0 ]; then
 			echo "Vous devez être root pour effectuer cette action !"
 			echo "Relancer le script -> sudo bash exec.sh"
