@@ -1,6 +1,7 @@
-# Download manager script
+# Do wnload manager script
 
 This bash script clean your download folder for you by putting files in subfolders
+
 
 It's a very simple script but is nevertheless super handy if your download folder is a jungle
 
@@ -20,7 +21,7 @@ It's a very simple script but is nevertheless super handy if your download folde
 
 ## Installation
 
-To use the script juste clone the repo.
+To use the script just clone the repo.
 ```
 git clone https://github.com/Lordva/Download_manager
 

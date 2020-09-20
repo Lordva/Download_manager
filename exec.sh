@@ -1,27 +1,54 @@
 #!/bin/bash
 
-DOWNLOAD_PATH=/home/louis/Téléchargements
+DOWNLOAD_PATH=/home/user/Téléchargements
 
-LOG_FILE=/home/louis/dev/scripts/download_log
+#LOG_FILE=/home/user/download_log
 
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
 # Chemins vers les differents dossiers
-JAR_PATH=/home/louis/Téléchargements/java_files
-ZIP_PATH=/home/louis/Téléchargements/zip_files
-VIDEO_PATH=/home/louis/Vidéos
-GZ_PATH=/home/louis/Téléchargements/gz_files
-IMG_PATH=/home/louis/Images
-DOC_PATH=/home/louis/Documents
-DEB_PATH=/home/louis/Téléchargements/deb_files
-ISO_PATH=/home/louis/Téléchargements/iso_files
-MP3_PATH=/home/louis/Musique
+JAR_PATH=/home/user/Téléchargements/java_files
+ZIP_PATH=/home/user/Téléchargements/zip_files
+VIDEO_PATH=/home/user/Vidéos
+GZ_PATH=/home/user/Téléchargements/gz_files
+IMG_PATH=/home/user/Images
+DOC_PATH=/home/user/Documents
+DEB_PATH=/home/user/Téléchargements/deb_files
+ISO_PATH=/home/user/Téléchargements/iso_files
+MP3_PATH=/home/user/Musique
 SERVICE_PATH=/etc/systemd/system
 SERVICE_FILE=dlmanager.service
 RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanager.service
 BIN_PATH=/bin/dlmanager
 NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
+
+RED='\033[0;31m'
+NC='\033[0m'
+ORANGE='\033[1;33m'
+
+if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
+	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
+	echo -e "The script wont work unless you modify all the path variables${NC}"
+	sleep 3
+	exit
+fi
+
+#help
+
+if [ "$1" != $NO_SERVICE_ARG ] || [ "$1" !=$HELP_ARG ]; then
+	echo -e "${RED}[ERROR]${NC} Unknow argument try --help"
+	exit
+fi
+if [ "$1" = $HELP_ARG ]; then
+	echo "Run the script using bash exec.sh"
+	echo ""
+	echo "--no-service	do not setup a service on your computer"
+	echo "--help		this page"
+	echo ""
+	echo "Enjoy"
+	exit
+fi
 #verif is le service existe
 
 if [ ! -f $SERVICE_PATH"/"$SERVICE_FILE ]; then
