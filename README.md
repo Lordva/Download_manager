@@ -12,7 +12,35 @@ It's a very simple script but is nevertheless super handy if your download folde
 
  - [x] basic file sorting
  - [x] renaming files containing spaces
+ - [x] auto service setup (enable on startup)
  - [ ] Add an "old" folder for added clarity in subfolders
  - [ ] support files with the same name
- - [ ] support advanced customisation and auto service setup  
+ - [ ] support advanced customisation
+ - [ ] add clear uninstall script
+
+## Installation
+
+To use the script juste clone the repo.
+```
+git clone https://github.com/Lordva/Download_manager
+
+cd Download_manager
+
+sudo bash exec.sh
+```
+if you dont want to setup a service simply do:
+```
+bash exec.sh --no-service-start
+```
+
+For the first run it's recomended to run as root to setup the service.
+Once the service is setup you wont be needed to run the exec.sh again il will run automaticly
+
+## Control
+
+To stop the script use `systemctl stop dlmanager`
+To restart the script use `systemctl restart dlmanager`
+To see the script logs run `systemctl status dlmanager`
+For more information see `man systemctl`
+
 

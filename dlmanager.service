@@ -2,7 +2,7 @@
 Description=Dowload file sorter
 
 [Service]
-ExecStart=bash /home/louis/dev/scripts/downloads/exec.sh
+ExecStart=bash /bin/dlmanager
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 [Install]

@@ -16,6 +16,52 @@ DOC_PATH=/home/louis/Documents
 DEB_PATH=/home/louis/Téléchargements/deb_files
 ISO_PATH=/home/louis/Téléchargements/iso_files
 MP3_PATH=/home/louis/Musique
+SERVICE_PATH=/etc/systemd/system
+SERVICE_FILE=dlmanager.service
+RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanager.service
+BIN_PATH=/bin/dlmanager
+NO_SERVICE_ARG=--noservice-install
+HELP_ARG=--help
+#verif is le service existe
+
+if [ ! -f $SERVICE_PATH"/"$SERVICE_FILE ]; then
+	echo "le service n'existe pas !"
+	if [ "$1" -ne $NO_SERVICE_ARG]; then
+		if [ "$EUID" -ne 0 ]; then
+			echo "Vous devez être root pour effectuer cette action !"
+			echo "Relancer le script -> sudo bash exec.sh"
+			exit
+		fi
+		echo "recherche du fichier service"
+		if [ ! -f $SERVICE_FILE ]; then
+			echo "le fichier service n'existe pas ou a été déplacé"
+			echo "Télechargement depuis GitHub..."
+			wget $RAW_URL
+			if [ "$?" != "0" ]; then
+				echo -e "[ERREUR] le telechargement a échoué !"
+				echo "impossible d'accéder à $RAW_URL"
+			else
+				echo "Télechargement términé"
+			fi
+			cp $SERVICE_FILE $SERVICE_PATH
+			ln -s exec.sh $SYMLINK_PATH
+			systemctl start $SERVICE_FILE
+			systemctl enable $SERVICE_FILE
+		else
+			echo "le fichier existe, activation du service"
+			cp $SERVICE_FILE $SERVICE_PATH
+			chown root:root $SERVICE_PATH"/"$SERVICE_FILE
+			cp exec.sh $BIN_PATH
+			systemctl daemon-reload
+                	systemctl start $SERVICE_FILE
+                	systemctl enable $SERVICE_FILE
+		fi
+		exit
+	fi
+else
+	echo "Le service existe"
+fi
+
 
 # Enleve les espaces
 cd $DOWNLOAD_PATH
