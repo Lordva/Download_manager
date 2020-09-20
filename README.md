@@ -4,11 +4,11 @@ This bash script clean your download folder for you by putting files in subfolde
 
 It's a very simple script but is nevertheless super handy if your download folder is a jungle
 
-#currently supported extentions :
+# currently supported extentions :
 
  - Jar / iso / img / zip / mp3 / mp4 / deb / pdf / odt / wav / image / raw / txt / jpg / png / gif and a few more...
 
-##To be added 
+## To be added 
 
  - [x] basic file sorting
  - [x] renaming files containing spaces
