@@ -1,4 +1,4 @@
-# Do wnload manager script
+# Download manager script
 
 This bash script clean your download folder for you by putting files in subfolders
 
