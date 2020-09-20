@@ -7,14 +7,14 @@ DOWNLOAD_PATH=/home/user/Téléchargements
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
 # Chemins vers les differents dossiers
-JAR_PATH=/home/user/Téléchargements/java_files
-ZIP_PATH=/home/user/Téléchargements/zip_files
+JAR_PATH=$DOWNLOAD_PATH"/java_files"
+ZIP_PATH=$DOWNLOAD_PATH"/zip_files"
 VIDEO_PATH=/home/user/Vidéos
-GZ_PATH=/home/user/Téléchargements/gz_files
+GZ_PATH=$DOWNLOAD_PATH"/gz_files"
 IMG_PATH=/home/user/Images
 DOC_PATH=/home/user/Documents
-DEB_PATH=/home/user/Téléchargements/deb_files
-ISO_PATH=/home/user/Téléchargements/iso_files
+DEB_PATH=$DOWNLOAD_PATH"/deb_files"
+ISO_PATH=$DOWNLOAD_PATH"/iso_files"
 MP3_PATH=/home/user/Musique
 SERVICE_PATH=/etc/systemd/system
 SERVICE_FILE=dlmanager.service
@@ -26,6 +26,7 @@ HELP_ARG=--help
 RED='\033[0;31m'
 NC='\033[0m'
 ORANGE='\033[1;33m'
+
 
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
 	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
