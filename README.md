@@ -30,7 +30,7 @@ sudo bash exec.sh
 ```
 if you dont want to setup a service simply do:
 ```
-bash exec.sh --no-service-start
+bash exec.sh --no-service
 ```
 
 For the first run it's recomended to run as root to setup the service.
