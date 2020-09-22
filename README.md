@@ -18,6 +18,8 @@ It's a very simple script but is nevertheless super handy if your download folde
  - [ ] support files with the same name
  - [ ] support advanced customisation
  - [ ] add clear uninstall script
+ - [ ] add support for every type of file (need to rewrite a large portion of the code)
+ - [ ] translate logs in English (currently in french)
 
 ## Installation
 
