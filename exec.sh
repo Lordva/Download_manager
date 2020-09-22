@@ -22,7 +22,6 @@ RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanag
 BIN_PATH=/bin/dlmanager
 NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
-DATE=`date +%a/%b/%y/%H`
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -158,14 +157,8 @@ echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
 #for f in *\ *; do mv "$f" "${f// /_}"; done
 while true; do
-	#if [[ $NUMBER_OF_FILES != $OLD_NOF ]]; then
-		#for f in *\ *; do mv "$f" "${f// /_}"; done
-	#fi
-	for ((i = 1 ; i <= $NUMBER_OF_FILES ; i++)); do
 
-		if [[ -f *\ * ]]; then
-			for f in *\ *; do mv "$f" "${f// /_}"; done
-		fi
+		for f in *\ *; do mv "$f" "${f// /_}"; done
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 	
