@@ -22,6 +22,7 @@ RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanag
 BIN_PATH=/bin/dlmanager
 NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
+DATE=`date +%a/%b/%y/%H`
 
 RED='\033[0;31m'
 NC='\033[0m'
@@ -37,7 +38,7 @@ fi
 
 #help
 
-if [ "$1" != $NO_SERVICE_ARG ] || [ "$1" !=$HELP_ARG ]; then
+if [[ $# != 0 ]] && [[ $1 != $NO_SERVICE_ARG ]] && [[ $1 !=$HELP_ARG ]]; then
 	echo -e "${RED}[ERROR]${NC} Unknow argument try --help"
 	exit
 fi
@@ -64,8 +65,9 @@ if [ ! -f $SERVICE_PATH"/"$SERVICE_FILE ]; then
 		if [ ! -f $SERVICE_FILE ]; then
 			echo "le fichier service n'existe pas ou a été déplacé"
 			echo "Télechargement depuis GitHub..."
-			wget $RAW_URL
-			if [ "$?" != "0" ]; then
+			#wget $RAW_URL
+			if ! wget $RAW_URL
+			then
 				echo -e "[ERREUR] le telechargement a échoué !"
 				echo "impossible d'accéder à $RAW_URL"
 			else
@@ -165,7 +167,7 @@ while true; do
 			for f in *\ *; do mv "$f" "${f// /_}"; done
 		fi
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | egrep -o ...$)
+		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 	
 		if [[ $EXTENTION = jar ]]; then
 			mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
