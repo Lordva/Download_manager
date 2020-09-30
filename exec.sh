@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-USERNAME=louis
+USERNAME=user
 DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 
 #LOG_FILE=/home/user/download_log
