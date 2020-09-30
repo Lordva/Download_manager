@@ -23,11 +23,15 @@ BIN_PATH=/bin/dlmanager
 NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
 
+PATHS=(JAR_PATH ZIP_PATH VIDEO_PATH GZ_PATH IMG_PATH DOC_PATH DEB_PATH ISO_PATH MP3_PATH)
+PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/user/Vidéos $DOWNLOAD_PATH/gz_files /home/user/Images /home/user/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/user/Musique)
+
+
 RED='\033[0;31m'
 NC='\033[0m'
 ORANGE='\033[1;33m'
 
-
+# Checking for folder existance
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
 	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
 	echo -e "The script wont work unless you modify all the path variables${NC}"
@@ -41,6 +45,7 @@ if [[ $# != 0 ]] && [[ $1 != $NO_SERVICE_ARG ]] && [[ $1 !=$HELP_ARG ]]; then
 	echo -e "${RED}[ERROR]${NC} Unknow argument try --help"
 	exit
 fi
+
 if [ "$1" = $HELP_ARG ]; then
 	echo "Run the script using bash exec.sh"
 	echo ""
@@ -51,6 +56,7 @@ if [ "$1" = $HELP_ARG ]; then
 	exit
 fi
 #verif is le service existe
+
 
 if [ ! -f $SERVICE_PATH"/"$SERVICE_FILE ]; then
 	echo "le service n'existe pas !"
@@ -96,62 +102,15 @@ fi
 cd $DOWNLOAD_PATH
 #for f in *\ *; do mv "$f" "${f// /_}"; done
 
-# Check si les dossiers existe et le créer sinon
-if [ ! -d $JAR_PATH ]; then
-	echo "le dossier $JAR_PATH n'existe pas, creation du dossier..."
-	mkdir $JAR_PATH
-else
-	echo "$JAR_PATH existe"
-fi
 
-if [ ! -d $ZIP_PATH ]; then
-	echo "le dossier $ZIP_PATH n'existe pas, creation du dossier..."
-	mkdir $ZIP_PATH
-else
-	echo "$ZIP_PATH existe"
-fi
-
-if [ ! -d $VIDEO_PATH ]; then
-	echo "le dossier $VIDEO_PATH n'existe pas, creation du dossier"
-	mkdir $VIDEO_PATH
-else
-	echo "$VIDEO_PATH existe"
-fi
-
-if [ ! -d $GZ_PATH ]; then
-        echo "le dossier $GZ_PATH n'existe pas, creation du dossier"
-        mkdir $GZ_PATH
-else
-        echo "$GZ_PATH existe"
-
-fi
-if [ ! -d $IMG_PATH ]; then
-        echo "le dossier $IMG_PATH n'existe pas, creation du dossier"
-        mkdir $IMG_PATH
-else
-        echo "$IMG_PATH existe"
-fi
-
-if [ ! -d $DOC_PATH ]; then
-	echo "le dossier $DOC_PATH n'exite pas, creation du dossier"
-	mkdir $DOC_PATH
-else
-	echo "$DOC_PATH existe"
-fi
-
-if [ ! -d $DEB_PATH ]; then
-	echo "le dossier $DEB_PATH n'existe pas, creation du dossier"
-	mkdir $DEB_PATH
-else
-	echo "$DEB_PATH existe"
-fi
-
-if [ ! -d $ISO_PATH ]; then
-	echo "le dossier $ISO_PATH n'existe pas, creation du dossier"
-	mkdir $ISO_PATH
-else
-	echo "$ISO_PATH existe"
-fi
+for ((i=0; i < ${PATHS[@]}; i++})) do
+	if [ ! -d ${FULL_PATH[$i]} ]; then
+		echo "le dossier ${FULL_PATH[$i]} n'existe pas, creation du dossier..."
+		mkdir ${FULL_PATH[$i]}
+	else
+		echo "${FULL_PATH[$i]} existe"
+	fi
+done
 
 echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
