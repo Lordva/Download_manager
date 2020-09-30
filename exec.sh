@@ -1,6 +1,8 @@
 #!/bin/bash
 
-DOWNLOAD_PATH=/home/user/Téléchargements
+
+USERNAME=louis
+DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 
 #LOG_FILE=/home/user/download_log
 
@@ -9,13 +11,13 @@ NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 # Chemins vers les differents dossiers
 JAR_PATH=$DOWNLOAD_PATH"/java_files"
 ZIP_PATH=$DOWNLOAD_PATH"/zip_files"
-VIDEO_PATH=/home/user/Vidéos
+VIDEO_PATH=/home/$USERNAME/Vidéos
 GZ_PATH=$DOWNLOAD_PATH"/gz_files"
-IMG_PATH=/home/user/Images
-DOC_PATH=/home/user/Documents
+IMG_PATH=/home/$USERNAME/Images
+DOC_PATH=/home/$USERNAME/Documents
 DEB_PATH=$DOWNLOAD_PATH"/deb_files"
 ISO_PATH=$DOWNLOAD_PATH"/iso_files"
-MP3_PATH=/home/user/Musique
+MP3_PATH=/home/$USERNAME/Musique
 SERVICE_PATH=/etc/systemd/system
 SERVICE_FILE=dlmanager.service
 RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanager.service
@@ -24,7 +26,7 @@ NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
 
 PATHS=(JAR_PATH ZIP_PATH VIDEO_PATH GZ_PATH IMG_PATH DOC_PATH DEB_PATH ISO_PATH MP3_PATH)
-PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/user/Vidéos $DOWNLOAD_PATH/gz_files /home/user/Images /home/user/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/user/Musique)
+PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
 
 
 RED='\033[0;31m'
@@ -41,7 +43,7 @@ fi
 
 #help
 
-if [[ $# != 0 ]] && [[ $1 != $NO_SERVICE_ARG ]] && [[ $1 !=$HELP_ARG ]]; then
+if [[ $# != 0 ]] && [[ "$1" != "$NO_SERVICE_ARG" ]] && [[ "$1" != "$HELP_ARG" ]]; then
 	echo -e "${RED}[ERROR]${NC} Unknow argument try --help"
 	exit
 fi
@@ -103,12 +105,12 @@ cd $DOWNLOAD_PATH
 #for f in *\ *; do mv "$f" "${f// /_}"; done
 
 
-for ((i=0; i < ${PATHS[@]}; i++})) do
-	if [ ! -d ${FULL_PATH[$i]} ]; then
-		echo "le dossier ${FULL_PATH[$i]} n'existe pas, creation du dossier..."
-		mkdir ${FULL_PATH[$i]}
+for ((i=0; i < ${#PATHS[@]}; i++)) do
+	if [ ! -d ${PATH_LINKS[$i]} ]; then
+		echo "le dossier ${PATH_LINKS[$i]} n'existe pas, creation du dossier..."
+		mkdir ${PATH_LINKS[$i]}
 	else
-		echo "${FULL_PATH[$i]} existe"
+		echo "${PATH_LINKS[$i]} existe"
 	fi
 done
 
@@ -116,8 +118,8 @@ echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
 #for f in *\ *; do mv "$f" "${f// /_}"; done
 while true; do
-
-		for f in *\ *; do mv "$f" "${f// /_}"; done
+	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
+		#for f in *\ *; do mv "$f" "${f// /_}"; done
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 	
