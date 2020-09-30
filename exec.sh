@@ -121,6 +121,11 @@ while true; do
 	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
 		#for f in *\ *; do mv "$f" "${f// /_}"; done
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+		if [[ $FILE_NAME = *\ * ]]; then
+			echo "Renaming $FILE_NAME into ${FILE_NAME// /_}"
+			mv "$FILE_NAME" "${FILE_NAME// /_}"
+			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+		fi
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 	
 		if [[ $EXTENTION = jar ]]; then
