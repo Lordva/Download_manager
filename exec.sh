@@ -6,7 +6,6 @@ DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 
 #LOG_FILE=/home/user/download_log
 
-NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
 # Chemins vers les differents dossiers
 JAR_PATH=$DOWNLOAD_PATH"/java_files"
@@ -24,21 +23,70 @@ RAW_URL=https://raw.githubusercontent.com/Lordva/Download_manager/master/dlmanag
 BIN_PATH=/bin/dlmanager
 NO_SERVICE_ARG=--no-service
 HELP_ARG=--help
+FOLDER_SAVE=.folders
+DL_SAVE=.dl
 
-PATHS=(JAR_PATH ZIP_PATH VIDEO_PATH GZ_PATH IMG_PATH DOC_PATH DEB_PATH ISO_PATH MP3_PATH)
+PATHS=(JAR_FILES ZIP_FILES VIDEO_FILES GZ_FILES IMG_FILES DOC_FILES DEB_FILES ISO_FILES MP3_FILES)
 PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
 
+
+if [ -f "$FOLDER_SAVE" ]; then PATH_LINKS=$(cat $FOLDER_SAVE) else PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+; fi
+if [ -f "$DL_SAVE" ]; then DOWNLOAD_PATH=$(cat $DL_SAVE) else DOWNLOAD_PATH=/home/$USERNAME/Téléchargements; fi
+
+NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
 RED='\033[0;31m'
 NC='\033[0m'
 ORANGE='\033[1;33m'
 
+change_path(){ #PERSISTANCE ?????
+	read -r -p "Please enter your Download folder path: " key
+	if [ -z "$key" ]; then
+		echo "You need to enter something !"
+		clear && change_path
+	else
+		if [ ! -d "$key" ]; then
+			echo "This Directory is not valid !"
+			echo "Please enter a directory path from root" && change_path
+		else
+			if [[ $key == */ ]]; then echo "Do not include the final /" && change_path; fi
+			DOWNLOAD_PATH=$key
+			echo "Download directory set to $DOWNLOAD_PATH"
+			PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+		fi
+	fi
+	for ((i=0; i < ${#PATH_LINKS[@]}; i++)) do
+		echo ""
+		read -r -p "Enter the path for your ${PATHS[$i]} currently ${PATH_LINKS[$i]}: " key
+		if [[ $key == */ ]]; then echo "Do not include the final /" && change_path; fi
+		if [ -z "$key" ]; then
+			echo "The default path will be kept : ${PATH_LINKS[$i]}"
+		else
+			if [ -d "$key" ]; then
+				echo "Be carefull, a directory named $key alredy exist."
+			else
+				echo "$key does not exist and will have to be created"
+			fi
+			PATH_LINKS[$i]=$key
+		fi
+	done
+	echo $DOWNLOAD_PATH > $DL_SAVE
+	echo ${PATH_LINKS[@]} >> $FOLDER_SAVE
+}
+
 # Checking for folder existance
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
 	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
 	echo -e "The script wont work unless you modify all the path variables${NC}"
-	sleep 3
-	exit
+	read -r -p "Do you want to change the default path ? [yes/no] " key
+	case $key in
+		Y ) change_path ;;
+		y ) change_path ;;
+		yes) change_path ;;
+		Yes) change_path ;;
+		*) echo "ending the script" & exit ;;
+	esac
 fi
 
 #help
