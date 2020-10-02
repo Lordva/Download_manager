@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 USERNAME=user
 DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 
@@ -26,13 +25,17 @@ HELP_ARG=--help
 FOLDER_SAVE=.folders
 DL_SAVE=.dl
 
-PATHS=(JAR_FILES ZIP_FILES VIDEO_FILES GZ_FILES IMG_FILES DOC_FILES DEB_FILES ISO_FILES MP3_FILES)
-PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+PATHS=(jar zip video .gz img doc deb iso mp3)
+
+#PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
 
 
-if [ -f "$FOLDER_SAVE" ]; then PATH_LINKS=$(cat $FOLDER_SAVE) else PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
-; fi
-if [ -f "$DL_SAVE" ]; then DOWNLOAD_PATH=$(cat $DL_SAVE) else DOWNLOAD_PATH=/home/$USERNAME/Téléchargements; fi
+if [ -f "$FOLDER_SAVE" ]; then
+	PATH_LINKS=$(cat $FOLDER_SAVE); 
+else PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+fi
+
+if [ -f "$DL_SAVE" ]; then DOWNLOAD_PATH=$(cat $DL_SAVE); else DOWNLOAD_PATH=/home/$USERNAME/Téléchargements; fi
 
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
@@ -150,7 +153,6 @@ fi
 
 # Enleve les espaces
 cd $DOWNLOAD_PATH
-#for f in *\ *; do mv "$f" "${f// /_}"; done
 
 
 for ((i=0; i < ${#PATHS[@]}; i++)) do
@@ -164,42 +166,64 @@ done
 
 echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
-#for f in *\ *; do mv "$f" "${f// /_}"; done
 while true; do
 	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
-		#for f in *\ *; do mv "$f" "${f// /_}"; done
+		echo $i
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+		echo "file $FILE_NAME"
 		if [[ $FILE_NAME = *\ * ]]; then
-			echo "Renaming $FILE_NAME into ${FILE_NAME// /_}"
+			echo "renaming $FILE_NAME"
 			mv "$FILE_NAME" "${FILE_NAME// /_}"
 			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
 		fi
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
-	
-		if [[ $EXTENTION = jar ]]; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
-	
-		elif [[ $EXTENTION = zip ]]; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME
-	
-		elif [[ $EXTENTION = mp4 ]] || [[ $EXTENTION = "wav" ]] ; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME
-		
-		elif [[ $EXTENTION = .gz ]]; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $GZ_PATH"/"$FILE_NAME
-
-		elif [[ $EXTENTION = jpg ]] || [[ $EXTENTION = png ]] || [[ $EXTENTION = gif ]] ; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $IMG_PATH"/"$FILE_NAME
-		elif [[ $EXTENTION = pdf ]] || [[ $EXTENTION = odt ]] || [[ $EXTENTION = txt ]] ; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
-		elif [[ $EXTENTION = deb ]] ; then
-                	mv $DOWNLOAD_PATH"/"$FILE_NAME $DEB_PATH"/"$FILE_NAME
-		elif [[ $EXTENTION = iso ]] || [[ $EXTENTION = img ]] || [[ $EXTENTION = age ]] ; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME
-		elif [[ $EXTENTION = mp3 ]] || [[ $EXTENTION = raw ]] ; then
-			mv $DOWNLOAD_PATH"/"$FILE_NAME $MP3_PATH"/"$FILE_NAME
-		fi
-		
+		for ((f=0; f <= ${#PATHS[@]}; f++)); do
+			if [ "${PATHS[$f]}" == "$EXTENTION" ]; then
+				mv $DOWNLOAD_PATH"/"$FILE_NAME ${PATH_LINKS[$i]}"/"$FILE_NAME
+			
+			fi	
+		done
 	done
-	sleep 2
+	sleep 3
 done
+
+
+
+#while true; do
+#	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
+#		#for f in *\ *; do mv "$f" "${f// /_}"; done
+#		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+#		if [[ $FILE_NAME = *\ * ]]; then
+#			echo "Renaming $FILE_NAME into ${FILE_NAME// /_}"
+#			mv "$FILE_NAME" "${FILE_NAME// /_}"
+#			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+#		fi
+#		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
+#	
+#		if [[ $EXTENTION = jar ]]; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
+#	
+#		elif [[ $EXTENTION = zip ]]; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME
+#	
+#		elif [[ $EXTENTION = mp4 ]] || [[ $EXTENTION = "wav" ]] ; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME
+#		
+#		elif [[ $EXTENTION = .gz ]]; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $GZ_PATH"/"$FILE_NAME
+#
+#		elif [[ $EXTENTION = jpg ]] || [[ $EXTENTION = png ]] || [[ $EXTENTION = gif ]] ; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $IMG_PATH"/"$FILE_NAME
+#		elif [[ $EXTENTION = pdf ]] || [[ $EXTENTION = odt ]] || [[ $EXTENTION = txt ]] ; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
+#		elif [[ $EXTENTION = deb ]] ; then
+#                	mv $DOWNLOAD_PATH"/"$FILE_NAME $DEB_PATH"/"$FILE_NAME
+#		elif [[ $EXTENTION = iso ]] || [[ $EXTENTION = img ]] || [[ $EXTENTION = age ]] ; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME
+#		elif [[ $EXTENTION = mp3 ]] || [[ $EXTENTION = raw ]] ; then
+#			mv $DOWNLOAD_PATH"/"$FILE_NAME $MP3_PATH"/"$FILE_NAME
+#		fi
+#		
+#	done
+#	sleep 2
+#done
