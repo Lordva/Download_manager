@@ -189,41 +189,41 @@ done
 
 
 
-#while true; do
-#	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
-#		#for f in *\ *; do mv "$f" "${f// /_}"; done
-#		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-#		if [[ $FILE_NAME = *\ * ]]; then
-#			echo "Renaming $FILE_NAME into ${FILE_NAME// /_}"
-#			mv "$FILE_NAME" "${FILE_NAME// /_}"
-#			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-#		fi
-#		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
-#	
-#		if [[ $EXTENTION = jar ]]; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
-#	
-#		elif [[ $EXTENTION = zip ]]; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME
-#	
-#		elif [[ $EXTENTION = mp4 ]] || [[ $EXTENTION = "wav" ]] ; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME
-#		
-#		elif [[ $EXTENTION = .gz ]]; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $GZ_PATH"/"$FILE_NAME
-#
-#		elif [[ $EXTENTION = jpg ]] || [[ $EXTENTION = png ]] || [[ $EXTENTION = gif ]] ; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $IMG_PATH"/"$FILE_NAME
-#		elif [[ $EXTENTION = pdf ]] || [[ $EXTENTION = odt ]] || [[ $EXTENTION = txt ]] ; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
-#		elif [[ $EXTENTION = deb ]] ; then
-#                	mv $DOWNLOAD_PATH"/"$FILE_NAME $DEB_PATH"/"$FILE_NAME
-#		elif [[ $EXTENTION = iso ]] || [[ $EXTENTION = img ]] || [[ $EXTENTION = age ]] ; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME
-#		elif [[ $EXTENTION = mp3 ]] || [[ $EXTENTION = raw ]] ; then
-#			mv $DOWNLOAD_PATH"/"$FILE_NAME $MP3_PATH"/"$FILE_NAME
-#		fi
-#		
-#	done
-#	sleep 2
-#done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
