@@ -151,7 +151,7 @@ else
 fi
 
 function files_amount(q){
-	if [[ ls $q | wc -l > 20 ]]; then return false; else return true; fi
+	if [[ ls $q | wc -l > 20 ]]; then n_old_f=$(ls $q | wc -l) && return true; else return false; fi
 }
 
 # Enleve les espaces
@@ -183,6 +183,10 @@ while true; do
 		for ((f=0; f <= ${#PATHS[@]}; f++)); do
 			if [ "${PATHS[$f]}" == "$EXTENTION" ]; then
 				if files_amount(${PATH_LINKS[$i]}); then
+					OLD_FILE=$(ls ${PATH_LINKS[$i]} | sed -n${n_old_f}p)
+					mkdir ${PATH_LINKS[$i]}"/old"
+					mv ${PATH_LINKS[$i]}"/"$OLD_FILE ${PATH_LINKS[$i]}"/old/"$OLD_FILE
+				fi
 				mv $DOWNLOAD_PATH"/"$FILE_NAME ${PATH_LINKS[$i]}"/"$FILE_NAME
 			elif [[ ${PATHS[$f]} == *^^ ]]
 			fi	
