@@ -25,10 +25,10 @@ HELP_ARG=--help
 FOLDER_SAVE=.folders
 DL_SAVE=.dl
 
-PATHS=(jar zip video .gz img doc deb iso mp3)
-
-#PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
-
+PATHS=(jar zip VIDEOS .gz IMAGES DOCS deb iso mp3)
+VIDEOS=(mp4 wav)
+IMAGES=(jpg jpeg png gif)
+DOCS=(pdf odt txt .md)
 
 if [ -f "$FOLDER_SAVE" ]; then
 	PATH_LINKS=$(cat $FOLDER_SAVE); 
@@ -150,6 +150,9 @@ else
 	echo "Le service existe"
 fi
 
+function files_amount(q){
+	if [[ ls $q | wc -l > 20 ]]; then return false; else return true; fi
+}
 
 # Enleve les espaces
 cd $DOWNLOAD_PATH
@@ -179,51 +182,11 @@ while true; do
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 		for ((f=0; f <= ${#PATHS[@]}; f++)); do
 			if [ "${PATHS[$f]}" == "$EXTENTION" ]; then
+				if files_amount(${PATH_LINKS[$i]}); then
 				mv $DOWNLOAD_PATH"/"$FILE_NAME ${PATH_LINKS[$i]}"/"$FILE_NAME
-			
+			elif [[ ${PATHS[$f]} == *^^ ]]
 			fi	
 		done
 	done
 	sleep 3
 done
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
