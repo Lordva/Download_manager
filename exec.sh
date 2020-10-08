@@ -30,53 +30,13 @@ VIDEOS=(mp4 wav)
 IMAGES=(jpg jpeg png gif)
 DOCS=(pdf odt txt .md)
 
-if [ -f "$FOLDER_SAVE" ]; then
-	PATH_LINKS=$(cat $FOLDER_SAVE); 
-else PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
-fi
-
-if [ -f "$DL_SAVE" ]; then DOWNLOAD_PATH=$(cat $DL_SAVE); else DOWNLOAD_PATH=/home/$USERNAME/Téléchargements; fi
+PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
 
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
 RED='\033[0;31m'
 NC='\033[0m'
 ORANGE='\033[1;33m'
-
-change_path(){ #PERSISTANCE ?????
-	read -r -p "Please enter your Download folder path: " key
-	if [ -z "$key" ]; then
-		echo "You need to enter something !"
-		clear && change_path
-	else
-		if [ ! -d "$key" ]; then
-			echo "This Directory is not valid !"
-			echo "Please enter a directory path from root" && change_path
-		else
-			if [[ $key == */ ]]; then echo "Do not include the final /" && change_path; fi
-			DOWNLOAD_PATH=$key
-			echo "Download directory set to $DOWNLOAD_PATH"
-			PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
-		fi
-	fi
-	for ((i=0; i < ${#PATH_LINKS[@]}; i++)) do
-		echo ""
-		read -r -p "Enter the path for your ${PATHS[$i]} currently ${PATH_LINKS[$i]}: " key
-		if [[ $key == */ ]]; then echo "Do not include the final /" && change_path; fi
-		if [ -z "$key" ]; then
-			echo "The default path will be kept : ${PATH_LINKS[$i]}"
-		else
-			if [ -d "$key" ]; then
-				echo "Be carefull, a directory named $key alredy exist."
-			else
-				echo "$key does not exist and will have to be created"
-			fi
-			PATH_LINKS[$i]=$key
-		fi
-	done
-	echo $DOWNLOAD_PATH > $DL_SAVE
-	echo ${PATH_LINKS[@]} >> $FOLDER_SAVE
-}
 
 # Checking for folder existance
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
@@ -150,18 +110,19 @@ else
 	echo "Le service existe"
 fi
 
-function files_amount(q){
-	if [[ ls $q | wc -l > 20 ]]; then n_old_f=$(ls $q | wc -l) && return true; else return false; fi
+function files_amount {
+	local q=${PATH_LINKS[$i]}
+	if ls $q | wc -l > 10 ; then n_old_f=$(ls $q | wc -l) && return true; else return false; fi
 }
 
 # Enleve les espaces
 cd $DOWNLOAD_PATH
 
-
+echo ${PATH_LINKS[1]}
 for ((i=0; i < ${#PATHS[@]}; i++)) do
-	if [ ! -d ${PATH_LINKS[$i]} ]; then
+	if [ ! -d "${PATH_LINKS[$i]}" ]; then
 		echo "le dossier ${PATH_LINKS[$i]} n'existe pas, creation du dossier..."
-		mkdir ${PATH_LINKS[$i]}
+		#mkdir ${PATH_LINKS[$i]}
 	else
 		echo "${PATH_LINKS[$i]} existe"
 	fi
@@ -182,7 +143,7 @@ while true; do
 		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
 		for ((f=0; f <= ${#PATHS[@]}; f++)); do
 			if [ "${PATHS[$f]}" == "$EXTENTION" ]; then
-				if files_amount(${PATH_LINKS[$i]}); then
+				if files_amount; then
 					OLD_FILE=$(ls ${PATH_LINKS[$i]} | sed -n${n_old_f}p)
 					mkdir ${PATH_LINKS[$i]}"/old"
 					mv ${PATH_LINKS[$i]}"/"$OLD_FILE ${PATH_LINKS[$i]}"/old/"$OLD_FILE
