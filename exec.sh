@@ -138,57 +138,57 @@ do
 		if [[ $FILE_NAME = *\ * ]]; then
 			echo "renaming $FILE_NAME"
 			mv "$FILE_NAME" "${FILE_NAME// /_}"
-			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-			FILE_TYPE=$(file -b $FILE_NAME)
+			FILE_NAME=$(ls "$DOWNLOAD_PATH" | sed -n ${i}p)
+			FILE_TYPE=$(file -b "$FILE_NAME")
 		fi
 		if [ "$FILE_TYPE" != "directory" ]; then # Check if file is a directory
 
 			for ((x=0; x < ${#VIDEOS[@]} ; x++)); do # Is it a video ?
 				if [[ "$FILE_TYPE" == *"${VIDEOS[$x]}"* ]]; then
 					echo "$FILE_NAME type is ${VIDEOS[$x]}"
-					if [ -f "$VIDEO_PATH"/"$FILE_NAME" ]; then file_exist "$VIDEO_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME; fi
+					if [ -f "$VIDEO_PATH"/"$FILE_NAME" ]; then file_exist "$VIDEO_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$VIDEO_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$VIDEO_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 				for ((x=0; x < ${#MUSIQUE[@]} ; x++)); do # Is it a video ?
 				if [[ "$FILE_TYPE" == *"${MUSIQUE[$x]}"* ]]; then
 					echo "$FILE_NAME type is ${MUSIQUE[$x]}"
-					if [ -f "$MP3_PATH/$FILE_NAME" ]; then file_exist "$MP3_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $MP3_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $MP3_PATH"/"$FILE_NAME; fi
+					if [ -f "$MP3_PATH"/"$FILE_NAME" ]; then file_exist "$MP3_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$MP3_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$MP3_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 				for ((x=0; x < ${#IMAGES[@]} ; x++)); do # Is it a video ?
 				if [[ "$FILE_TYPE" == *"${IMAGES[$x]}"* ]]; then
 					echo "$FILE_NAME type is ${IMAGES[$x]}"
-					if [ -f "$IMG_PATH/$FILE_NAME" ]; then file_exist "$IMG_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $IMG_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $IMG_PATH"/"$FILE_NAME; fi
+					if [ -f "$IMG_PATH"/"$FILE_NAME" ]; then file_exist "$IMG_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$IMG_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$IMG_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 			for ((x=0; x < ${#DOCS[@]} ; x++)); do # Is it a document ?
 				if [[ "$FILE_TYPE" == *"${DOCS[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${DOCS[$x]}"
-					if [ -f "$DOC_PATH/$FILE_NAME" ]; then file_exist "$DOC_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME; fi
+					if [ -f "$DOC_PATH"/"$FILE_NAME" ]; then file_exist "$DOC_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$DOC_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$DOC_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 			for ((x=0; x < ${#EXEC[@]} ; x++)); do # Is it a executable ?
 				if [[ "$FILE_TYPE" == *"${EXEC[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${EXEC[$x]}"
-					if [ -f "$EXEC_PATH/$FILE_NAME" ]; then file_exist "$EXEC_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$FILE_NAME; fi
+					if [ -f "$EXEC_PATH"/"$FILE_NAME" ]; then file_exist "$EXEC_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$EXEC_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$EXEC_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 			for ((x=0; x < ${#COMPRESSED[@]} ; x++)); do # Is it a compressed file ?
 				if [[ "$FILE_TYPE" == *"${COMPRESSED[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${COMPRESSED[$x]}"
-					if [ -f "$ZIP_PATH/$FILE_NAME" ]; then file_exist "$ZIP_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME; fi
+					if [ -f "$ZIP_PATH"/"$FILE_NAME" ]; then file_exist "$ZIP_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$ZIP_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$ZIP_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 			for ((x=0; x < ${#SYSTEM[@]} ; x++)); do # Is it a system file (iso etc...) ?
 				if [[ "$FILE_TYPE" == *"${SYSTEM[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${SYSTEM[$x]}"
-					if [ -f "$ISO_PATH/$FILE_NAME" ]; then file_exist "$ISO_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME; fi
+					if [ -f "$ISO_PATH"/"$FILE_NAME" ]; then file_exist "$ISO_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$ISO_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$ISO_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 			for ((x=0; x < ${#JAVA[@]} ; x++)); do # Is it a java file ?
 				if [[ "$FILE_TYPE" == *"${JAVA[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${JAVA[$x]}"
-					if [ -f "$JAR_PATH/$FILE_NAME" ]; then file_exist "$JAR_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME; fi
+					if [ -f "$JAR_PATH"/"$FILE_NAME" ]; then file_exist "$JAR_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$JAR_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$JAR_PATH"/"$FILE_NAME"; fi
 				fi	
 			done
 
@@ -196,7 +196,7 @@ do
 			# Fallback category (text files)
 			if [[ "$FILE_TYPE" == *"ASCII text"* ]]; then 
 				echo "$FILE_NAME is probably just a text file"
-				if [ -f "$DOC_PATH/$FILE_NAME" ]; then file_exist "$DOC_PATH" && mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME; fi
+				if [ -f "$DOC_PATH"/"$FILE_NAME" ]; then file_exist "$DOC_PATH" && mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$DOC_PATH"/"$NEW_FILE_NAME"; else mv "$DOWNLOAD_PATH"/"$FILE_NAME" "$DOC_PATH"/"$FILE_NAME"; fi
 			fi	
 		fi
 	done

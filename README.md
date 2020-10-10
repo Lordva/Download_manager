@@ -1,4 +1,5 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/lordva/download_manager/badge)](https://www.codefactor.io/repository/github/lordva/download_manager)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bd80575e118a4a56a6ce79cf247287f8)](https://www.codacy.com/gh/Lordva/Download_manager/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Lordva/Download_manager&amp;utm_campaign=Badge_Grade)
 
 # Download manager script
 
@@ -6,7 +7,7 @@ This bash script clean your download folder for you by putting files in subfolde
 
 It's a very simple script but is nevertheless super handy if your download folder is a jungle
 
-# currently supported extentions
+## currently supported extentions
  
 - Jar / iso / img / zip / mp3 / mp4 / deb / pdf / odt / wav / image / raw / txt / jpg / png / gif and a few more...
 	
