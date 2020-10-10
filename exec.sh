@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USERNAME=user
+USERNAME=louis
 DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 
 #LOG_FILE=/home/user/download_log
@@ -30,7 +30,9 @@ VIDEOS=(mp4 wav)
 IMAGES=(jpg jpeg png gif)
 DOCS=(pdf odt txt .md)
 
-PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+
+#PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+
 
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
 
@@ -42,14 +44,6 @@ ORANGE='\033[1;33m'
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
 	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
 	echo -e "The script wont work unless you modify all the path variables${NC}"
-	read -r -p "Do you want to change the default path ? [yes/no] " key
-	case $key in
-		Y ) change_path ;;
-		y ) change_path ;;
-		yes) change_path ;;
-		Yes) change_path ;;
-		*) echo "ending the script" & exit ;;
-	esac
 fi
 
 #help
@@ -110,11 +104,6 @@ else
 	echo "Le service existe"
 fi
 
-function files_amount {
-	local q=${PATH_LINKS[$i]}
-	if ls $q | wc -l > 10 ; then n_old_f=$(ls $q | wc -l) && return true; else return false; fi
-}
-
 # Enleve les espaces
 cd $DOWNLOAD_PATH
 
@@ -122,7 +111,7 @@ echo ${PATH_LINKS[1]}
 for ((i=0; i < ${#PATHS[@]}; i++)) do
 	if [ ! -d "${PATH_LINKS[$i]}" ]; then
 		echo "le dossier ${PATH_LINKS[$i]} n'existe pas, creation du dossier..."
-		#mkdir ${PATH_LINKS[$i]}
+		mkdir ${PATH_LINKS[$i]}
 	else
 		echo "${PATH_LINKS[$i]} existe"
 	fi
@@ -132,24 +121,18 @@ echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
 while true; do
 	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
-		echo $i
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-		echo "file $FILE_NAME"
+		FILE_TYPE=$(file $FILE_NAME)
+
 		if [[ $FILE_NAME = *\ * ]]; then
 			echo "renaming $FILE_NAME"
 			mv "$FILE_NAME" "${FILE_NAME// /_}"
 			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
 		fi
-		EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
-		for ((f=0; f <= ${#PATHS[@]}; f++)); do
-			if [ "${PATHS[$f]}" == "$EXTENTION" ]; then
-				if files_amount; then
-					OLD_FILE=$(ls ${PATH_LINKS[$i]} | sed -n${n_old_f}p)
-					mkdir ${PATH_LINKS[$i]}"/old"
-					mv ${PATH_LINKS[$i]}"/"$OLD_FILE ${PATH_LINKS[$i]}"/old/"$OLD_FILE
-				fi
-				mv $DOWNLOAD_PATH"/"$FILE_NAME ${PATH_LINKS[$i]}"/"$FILE_NAME
-			elif [[ ${PATHS[$f]} == *^^ ]]
+		#EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
+		for ((x=1; x <= ${#VIDEO[@]} ; x++)); do
+			if [ "${VIDEO[$x]}" == "*$FILENAME*" ]; then
+				mv $DOWNLOAD_PATH"/"$FILE_NAME "VIDEO_PATH/"$FILE_NAME
 			fi	
 		done
 	done

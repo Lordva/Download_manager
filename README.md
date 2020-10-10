@@ -39,7 +39,7 @@ bash exec.sh --no-service
 For the first run it's recomended to run as root to setup the service.
 Once the service is setup you wont be needed to run the exec.sh again il will run automaticly
 
-#### Edit exec.sh and change paths variables to your computer specifics !**
+#### Edit exec.sh and change paths variables to your computer specifics !
 ## Control
 
 To stop the script use `systemctl stop dlmanager`
