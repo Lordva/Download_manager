@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/lordva/download_manager/badge)](https://www.codefactor.io/repository/github/lordva/download_manager)
+
 # Download manager script
 
 This bash script clean your download folder for you by putting files in subfolders
