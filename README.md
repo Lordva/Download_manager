@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/793e70e55d1c4c55adbd7019ecf12190)](https://app.codacy.com/gh/Lordva/Download_manager?utm_source=github.com&utm_medium=referral&utm_content=Lordva/Download_manager&utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/lordva/download_manager/badge)](https://www.codefactor.io/repository/github/lordva/download_manager)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/bd80575e118a4a56a6ce79cf247287f8)](https://www.codacy.com/gh/Lordva/Download_manager/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Lordva/Download_manager&amp;utm_campaign=Badge_Grade)
 
