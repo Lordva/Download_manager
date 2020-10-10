@@ -46,6 +46,12 @@ RED='\033[0;31m'
 NC='\033[0m'
 ORANGE='\033[1;33m'
 
+file_exist(){
+	echo $FILE_NAME existe deja !
+	local NUMBER_OF_FILE=$(ls $1/$FILE_NAME* | wc -l)
+	NEW_FILE_NAME="$FILE_NAME#$NUMBER_OF_FILE"
+}
+
 # Checking for folder existance
 if [ $DOWNLOAD_PATH = "/home/user/Téléchargements" ]; then
 	echo -e "${ORANGE}[WARNING] ${NC}You haven't modified the path of your Download folder, it is curently set to default, ${RED}change it to your own${NC}"
@@ -124,10 +130,12 @@ done
 
 echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 
-while true; do
+while : 
+do
 	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
 		FILE_TYPE=$(file -b $FILE_NAME)
+		echo "nom du fichier = $FILE_NAME"
 
 		if [[ $FILE_NAME = *\ * ]]; then
 			echo "renaming $FILE_NAME"
@@ -138,50 +146,50 @@ while true; do
 		if [ "$FILE_TYPE" != "directory" ]; then # Check if file is a directory
 
 			for ((x=0; x < ${#VIDEOS[@]} ; x++)); do # Is it a video ?
-				#echo "VIDEO $x = ${VIDEOS[$x]}"
 				if [[ "$FILE_TYPE" == *"${VIDEOS[$x]}"* ]]; then
 					echo "$FILE_NAME type is ${VIDEOS[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME
+					if [ -f "$VIDEO_PATH/$FILE_NAME" ]; then file_exist $VIDEO_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 			for ((x=0; x < ${#DOCS[@]} ; x++)); do # Is it a document ?
 				if [[ "$FILE_TYPE" == *"${DOCS[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${DOCS[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
+					if [ -f "$DOC_PATH/$FILE_NAME" ]; then file_exist $DOC_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 			for ((x=0; x < ${#EXEC[@]} ; x++)); do # Is it a executable ?
 				if [[ "$FILE_TYPE" == *"${EXEC[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${EXEC[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$FILE_NAME
+					if [ -f "$EXEC_PATH/$FILE_NAME" ]; then file_exist $EXEC_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 			for ((x=0; x < ${#COMPRESSED[@]} ; x++)); do # Is it a compressed file ?
 				if [[ "$FILE_TYPE" == *"${COMPRESSED[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${COMPRESSED[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME
+					if [ -f "$ZIP_PATH/$FILE_NAME" ]; then file_exist $ZIP_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 			for ((x=0; x < ${#SYSTEM[@]} ; x++)); do # Is it a system file (iso etc...) ?
 				if [[ "$FILE_TYPE" == *"${SYSTEM[$x]}"* ]]; then 
 					echo "$FILE_NAME type is ${SYSTEM[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME
+					if [ -f "$ISO_PATH/$FILE_NAME" ]; then file_exist $ISO_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 			for ((x=0; x < ${#JAVA[@]} ; x++)); do # Is it a java file ?
 				if [[ "$FILE_TYPE" == *"${JAVA[$x]}"* ]]; then 
-					echo "$FILE_NAME type is ${COMPRESSED[$x]}"
-					mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
+					echo "$FILE_NAME type is ${JAVA[$x]}"
+					if [ -f "$JAR_PATH/$FILE_NAME" ]; then file_exist $JAR_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME; fi
 				fi	
 			done
 
 
 			# Fallback category (text files)
 			if [[ "$FILE_TYPE" == *"ASCII text"* ]]; then 
-				echo "$FILE_NAME type is probably just a text file"
-				mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
+				echo "$FILE_NAME is probably just a text file"
+				if [ -f "$DOC_PATH/$FILE_NAME" ]; then file_exist $DOC_PATH && mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$NEW_FILE_NAME; else mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME; fi
 			fi	
 		fi
 	done
 	sleep 3
 done
+
