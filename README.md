@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/793e70e55d1c4c55adbd7019ecf12190)](https://app.codacy.com/gh/Lordva/Download_manager?utm_source=github.com&utm_medium=referral&utm_content=Lordva/Download_manager&utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/lordva/download_manager/badge)](https://www.codefactor.io/repository/github/lordva/download_manager)
 
 # Download manager script
