@@ -6,8 +6,11 @@ This bash script clean your download folder for you by putting files in subfolde
 It's a very simple script but is nevertheless super handy if your download folder is a jungle
 
 # currently supported extentions :
-
+ 
  - Jar / iso / img / zip / mp3 / mp4 / deb / pdf / odt / wav / image / raw / txt / jpg / png / gif and a few more...
+	
+### UPDATE ! 
+The script now check file type with the file command and not with the extention, this mean that virtualy every file type is supported, support will extend with time as I update the script
 
 ## To be added 
 
@@ -16,9 +19,9 @@ It's a very simple script but is nevertheless super handy if your download folde
  - [x] auto service setup (enable on startup)
  - [ ] Add an "old" folder for added clarity in subfolders
  - [ ] support files with the same name
- - [ ] support advanced customisation
+ - [x] support advanced customisation
  - [ ] add clear uninstall script
- - [ ] add support for every type of file (need to rewrite a large portion of the code)
+ - [x] add support for every type of file (need to rewrite a large portion of the code)
  - [ ] translate logs in English (currently in french)
 
 ## Installation

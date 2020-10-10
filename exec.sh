@@ -10,11 +10,11 @@ DOWNLOAD_PATH=/home/$USERNAME/Téléchargements
 JAR_PATH=$DOWNLOAD_PATH"/java_files"
 ZIP_PATH=$DOWNLOAD_PATH"/zip_files"
 VIDEO_PATH=/home/$USERNAME/Vidéos
-GZ_PATH=$DOWNLOAD_PATH"/gz_files"
 IMG_PATH=/home/$USERNAME/Images
 DOC_PATH=/home/$USERNAME/Documents
 DEB_PATH=$DOWNLOAD_PATH"/deb_files"
 ISO_PATH=$DOWNLOAD_PATH"/iso_files"
+EXEC_PATH=$DOWNLOAD_PATH"/executables"
 MP3_PATH=/home/$USERNAME/Musique
 SERVICE_PATH=/etc/systemd/system
 SERVICE_FILE=dlmanager.service
@@ -25,13 +25,19 @@ HELP_ARG=--help
 FOLDER_SAVE=.folders
 DL_SAVE=.dl
 
-PATHS=(jar zip VIDEOS .gz IMAGES DOCS deb iso mp3)
-VIDEOS=(mp4 wav)
+ARRAY_LIST=(VIDEOS IMAGES DOCS COMPRESSED JAVA EXEC SYSTEM)
+#PATHS=(jar zip VIDEOS IMAGES DOCS deb iso mp3)
+VIDEOS=(mp4 wav AVI video) 
 IMAGES=(jpg jpeg png gif)
-DOCS=(pdf odt txt .md)
+DOCS=(PDF Word)
+COMPRESSED=(Zip RAR compressed)
+EXEC=(executable)
+SYSTEM=(boot)
+JAVA=(java)
 
 
-#PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos $DOWNLOAD_PATH/gz_files /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique)
+
+PATH_LINKS=($DOWNLOAD_PATH/java_files $DOWNLOAD_PATH/zip_files /home/$USERNAME/Vidéos /home/$USERNAME/Images /home/$USERNAME/Documents $DOWNLOAD_PATH/deb_files $DOWNLOAD_PATH/iso_files /home/$USERNAME/Musique $DOWNLOAD_PATH/executables)
 
 
 NUMBER_OF_FILES=$(ls ${DOWNLOAD_PATH}| wc -l)
@@ -104,17 +110,16 @@ else
 	echo "Le service existe"
 fi
 
-# Enleve les espaces
 cd $DOWNLOAD_PATH
 
-echo ${PATH_LINKS[1]}
-for ((i=0; i < ${#PATHS[@]}; i++)) do
+# Verify if the folders exists
+for ((i=0; i < ${#PATH_LINKS[@]}; i++)) do
 	if [ ! -d "${PATH_LINKS[$i]}" ]; then
 		echo "le dossier ${PATH_LINKS[$i]} n'existe pas, creation du dossier..."
-		mkdir ${PATH_LINKS[$i]}
-	else
-		echo "${PATH_LINKS[$i]} existe"
-	fi
+			mkdir ${PATH_LINKS[$i]}
+		else
+			echo "${PATH_LINKS[$i]} existe"
+		fi
 done
 
 echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
@@ -122,19 +127,61 @@ echo "il y a $NUMBER_OF_FILES fichier dans $DOWNLOAD_PATH"
 while true; do
 	for ((i=1; i <= $NUMBER_OF_FILES; i++)); do
 		FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
-		FILE_TYPE=$(file $FILE_NAME)
+		FILE_TYPE=$(file -b $FILE_NAME)
 
 		if [[ $FILE_NAME = *\ * ]]; then
 			echo "renaming $FILE_NAME"
 			mv "$FILE_NAME" "${FILE_NAME// /_}"
 			FILE_NAME=$(ls $DOWNLOAD_PATH | sed -n ${i}p)
+			FILE_TYPE=$(file -b $FILE_NAME)
 		fi
-		#EXTENTION=$(ls $DOWNLOAD_PATH | sed -n ${i}p | grep -E -o ...$)
-		for ((x=1; x <= ${#VIDEO[@]} ; x++)); do
-			if [ "${VIDEO[$x]}" == "*$FILENAME*" ]; then
-				mv $DOWNLOAD_PATH"/"$FILE_NAME "VIDEO_PATH/"$FILE_NAME
+		if [ "$FILE_TYPE" != "directory" ]; then # Check if file is a directory
+
+			for ((x=0; x < ${#VIDEOS[@]} ; x++)); do # Is it a video ?
+				#echo "VIDEO $x = ${VIDEOS[$x]}"
+				if [[ "$FILE_TYPE" == *"${VIDEOS[$x]}"* ]]; then
+					echo "$FILE_NAME type is ${VIDEOS[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $VIDEO_PATH"/"$FILE_NAME
+				fi	
+			done
+			for ((x=0; x < ${#DOCS[@]} ; x++)); do # Is it a document ?
+				if [[ "$FILE_TYPE" == *"${DOCS[$x]}"* ]]; then 
+					echo "$FILE_NAME type is ${DOCS[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
+				fi	
+			done
+			for ((x=0; x < ${#EXEC[@]} ; x++)); do # Is it a executable ?
+				if [[ "$FILE_TYPE" == *"${EXEC[$x]}"* ]]; then 
+					echo "$FILE_NAME type is ${EXEC[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $EXEC_PATH"/"$FILE_NAME
+				fi	
+			done
+			for ((x=0; x < ${#COMPRESSED[@]} ; x++)); do # Is it a compressed file ?
+				if [[ "$FILE_TYPE" == *"${COMPRESSED[$x]}"* ]]; then 
+					echo "$FILE_NAME type is ${COMPRESSED[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $ZIP_PATH"/"$FILE_NAME
+				fi	
+			done
+			for ((x=0; x < ${#SYSTEM[@]} ; x++)); do # Is it a system file (iso etc...) ?
+				if [[ "$FILE_TYPE" == *"${SYSTEM[$x]}"* ]]; then 
+					echo "$FILE_NAME type is ${SYSTEM[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $ISO_PATH"/"$FILE_NAME
+				fi	
+			done
+			for ((x=0; x < ${#JAVA[@]} ; x++)); do # Is it a java file ?
+				if [[ "$FILE_TYPE" == *"${JAVA[$x]}"* ]]; then 
+					echo "$FILE_NAME type is ${COMPRESSED[$x]}"
+					mv $DOWNLOAD_PATH"/"$FILE_NAME $JAR_PATH"/"$FILE_NAME
+				fi	
+			done
+
+
+			# Fallback category (text files)
+			if [[ "$FILE_TYPE" == *"ASCII text"* ]]; then 
+				echo "$FILE_NAME type is probably just a text file"
+				mv $DOWNLOAD_PATH"/"$FILE_NAME $DOC_PATH"/"$FILE_NAME
 			fi	
-		done
+		fi
 	done
 	sleep 3
 done
