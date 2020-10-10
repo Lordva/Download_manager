@@ -30,7 +30,7 @@ The script now support file with the same name at the destination folder, it wil
 ## Installation
 
 To use the script just clone the repo.
-```shell
+```bash
 git clone https://github.com/Lordva/Download_manager
 
 cd Download_manager
@@ -38,19 +38,18 @@ cd Download_manager
 sudo bash exec.sh
 ```
 if you dont want to setup a service simply do:
-```
+```bash
 bash exec.sh --no-service
 ```
 
 For the first run it's recomended to run as root to setup the service.
 Once the service is setup you wont be needed to run the exec.sh again il will run automaticly
 
-#### Edit exec.sh and change paths variables to your computer specifics !
+### Edit exec.sh and change paths variables to your computer specifics !
+
 ## Control
 
 To stop the script use `systemctl stop dlmanager`
 To restart the script use `systemctl restart dlmanager`
 To see the script logs run `systemctl status dlmanager`
 For more information see `man systemctl`
-
-

@@ -138,7 +138,7 @@ do
 		if [[ $FILE_NAME = *\ * ]]; then
 			echo "renaming $FILE_NAME"
 			mv "$FILE_NAME" "${FILE_NAME// /_}"
-			FILE_NAME=$(ls "$DOWNLOAD_PATH" | sed -n ${i}p)
+			FILE_NAME=$(ls "$DOWNLOAD_PATH" | sed -n "${i}"p)
 			FILE_TYPE=$(file -b "$FILE_NAME")
 		fi
 		if [ "$FILE_TYPE" != "directory" ]; then # Check if file is a directory
